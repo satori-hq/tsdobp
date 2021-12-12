@@ -1,8 +1,7 @@
-const META_KEY: string = '_M'
+const TIMEOUT_MS = 1000;
 
 export class Object {
 	state: DurableObjectState
-	meta: any
 	data: any
 	timeouts: any
 
@@ -10,9 +9,7 @@ export class Object {
 		this.state = state;
 		this.timeouts = {}
 		this.data = {}
-		this.state.blockConcurrencyWhile(async () => {
-			this.meta = await this.state.storage?.get<any>(META_KEY);
-		})
+		// this.state.blockConcurrencyWhile(async () => {}) // not needed
 	}
 
 	// Handle HTTP requests from clients.
@@ -49,7 +46,7 @@ export class Object {
 		}
 		this.timeouts[key] = setTimeout(() => {
 			delete this.data[key]
-		}, 500)
+		}, TIMEOUT_MS)
 		
 		return new Response(value.toString());
 	}

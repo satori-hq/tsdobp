@@ -18,5 +18,7 @@ test('should return', async (t) => {
 		if (num % 100 === 0) last = parseInt(res)
 	}))
 
+	console.log(last, first)
+
 	t.is(last - first, 99)
 });
